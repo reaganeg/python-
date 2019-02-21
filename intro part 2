@@ -281,6 +281,40 @@ if __name__ == '__main__':
     print(new_list)
 
 
+ANOTHER WAY 
+
+def invert(l):
+    '''Inverts the given list
+    Args:
+        l (list): list of strings representing integers in the range [0-255]
+    Returns:
+        None
+    '''
+    for x in range(len(l)):
+        l[x] = str(255 - int (l[x]))
+        print(l[x])
+	
+
+def inverted(l):
+    '''Returns a new list that is the given list inverted
+    Args:
+        l (list): list of strings representing integers in the range [0-255]
+    Returns:
+        list: new list that is the given list inverted
+    '''
+    new_list=[]
+    for x in l:
+        new_list.append(str(255 - int(x)))
+    
+    return new_list
+
+if __name__ == '__main__':
+    l = ['100', '200', '250']
+    invert(l)
+    new_list = inverted(l)
+
+    print(new_list)
+
 
 
 
