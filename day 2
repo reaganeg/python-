@@ -1,0 +1,24 @@
+chmod +x _______.py <----- file name 
+./______.py  <-- run file name
+gedit ./_______ .py <--- file name
+
+<--------> Make an string, and remove the numbers from it <---------
+
+def kill(strng):
+	a = []  #make a new list, empty 
+	
+	for x in strng:  ##or x iterating through the input parameter 
+		if x.isalpha():  ##.isalpha() a member function for the string type class condition 
+			a.append(x)  ###.append adds an element into a list 
+		
+	return ''.join(a)    ##'' makes an empty string 
+		
+
+if __name__ == '__main__':
+	st = input('enter a alpha numeric string ')
+	val = kill(st)
+	print(val)
+  
+  
+  STEGANOGRAPHY
+  
