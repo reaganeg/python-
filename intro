@@ -1,0 +1,241 @@
+vim test.py
+vim test3.py
+python3 test3.py
+python.org
+python 3docs
+python.org/moin/beginnersguide
+
+
+INTRO- spaces are important along with indentation 
+
+INTEGERS - type system. What operations are available for a specific opbject 
+# storing a value
+
+  a = 12
+  type(a)
+
+  b = 12.2
+  type(b)
+
+#dont have one string in your code using single or doublw quotes 
+# class is string 
+# strongly typed, doesnt do things like combune different integers 
+python is considered strongly typed 
+have all the operations 
+type is inferred by the value you are assigning 
+
+<-----MUTAILITY---->
+many types are inmutable, creates  a label storedf in the memory
+  id(a) <----- some object in the memory with a 
+
+<----STRINGS---->
+prooduing a new srtring with whatever modifications are made 
+
+<-------sequences <-- collections of objects 
+(1,2,3) ,--- TOUPLE
+are inmutable 
+created it, printed it on the screen but haven't done anything wiht it 
+must BIND it to a name 
+  a = (1,2,3)
+  b  = a <---- new name for the same obj
+  
+  <----LISTS----->
+  are mutable 
+    []
+    b [0,1,2,3.....etc] <--- placing 
+    b[0] <- will give the first number
+    b[0] = 9 <- asign new value for place 0
+  
+   b[-1] <-  last element of the list , movign backwards
+  
+  <----APPEND---->
+  
+  c.append(#) <--- adds a number into a list 
+  list and touples dont have to contain the same type , can be nested 
+    c.append([1,2,3])
+    c.remove()
+    c.extend()
+    t[0][0] = 9 <---- will change the touple the first # in the first list, the 0's are the place markers 
+    
+    
+   STRINGS
+   
+   'hello'[0] <---- the first letter 
+   'hello'[-1] <----- last letter 
+   
+   
+   
+   '''.format <--- it substitutes the value anywhere within the format string that 
+   'Hello. My name is {}.'.format('albert') <--- code 
+        'hello.my name is albert            <-- result
+    s = ray
+    'hello.my name is {}. '.format(s)
+          'hellp .my name is ray
+          
+          
+   precision
+   '{:.2f}'. format(3.32434343) <---will go to 2 decimal places and make it a float 
+   
+   
+   <------SPLIT<----
+   'this is a sentance'.split()
+   addr.split (parameters)
+   
+   <--JOIN function --->>
+   
+   before = addr.split(@)
+   ''.join(before) <---- squishes the letters together 
+   '.'join(before).split('.')
+   
+   
+   <---CONVERSION <---
+   list('hello')
+>>> list('hello')
+['h', 'e', 'l', 'l', 'o']
+
+>>> l = list('hello')
+>>> l[0]
+'h'
+>>> r = j
+>>> l[0]= r
+
+>>> l
+['j', 'e', 'l', 'l', 'o']
+>>> ''.join(l)
+'jello'
+>>> 
+
+#####USER INPUT AND OUTPUT####
+
+>>> print('hello', 'world', 'lalalal')
+hello world lalalal
+>>> print('hello', 'world', sep=' ')
+hello world
+>>> print('hello', 'world', sep=' : ')
+hello : world
+>>> print('hello', 'world', sep=' \n)
+  File "<stdin>", line 1
+    print('hello', 'world', sep=' \n)
+                                    ^
+SyntaxError: EOL while scanning string literal
+>>> print('hello', 'world', sep=' \n')
+hello 
+world
+>>> print('hello', 'world', end=\n')
+  File "<stdin>", line 1
+    print('hello', 'world', end=\n')
+                                   ^
+SyntaxError: unexpected character after line continuation character
+>>> print('hello', 'world', end='n')
+hello worldn>>> 
+>>> print('hello', 'world', end='\n')
+hello world
+>>> print('hello', 'world', end='')
+hello world>>> 
+>>> print('hello', 'world',sep=':', end='')
+hello:world>>> 
+>>> print('hello', 'world',sep=':', end='\n\n'0
+  File "<stdin>", line 1
+    print('hello', 'world',sep=':', end='\n\n'0
+                                              ^
+SyntaxError: invalid syntax
+>>> print('hello', 'world',sep=':', end='\n\n')
+hello:world
+>> print('{} : {}' .format('hello',world'))
+  File "<stdin>", line 1
+    print('{} : {}' .format('hello',world'))
+                                           ^
+SyntaxError: EOL while scanning string literal
+>>> print('{} : {}' .format('hello','world'))
+hello : world
+>>> print('{} : {}\n' .format('hello','world'))
+hello : world
+
+
+
+<--------USER MUST PUT SOMETHING IN <-------
+
+
+>>> input()
+hello world
+'hello world'
+>>> a = input()
+somnething
+>>> a = input()
+12
+>>> a
+'12'
+>>> int(a)
+12
+>>> a = int(input())
+143
+>>> a
+143
+>>> a = int(input('enter a number: '))
+enter a number: 12
+>>> a
+12
+>>> a = int(input('enter a number: '))
+enter a number: 456
+>>> a
+456
+>>> 
+
+FLOW CONTROL
+conditionally execute blocks of code, depending if something is true or false
+conditon is anything that can be a boolean construct 
+
+
+
+!=
+<
+>
+<=
+>=
+and 
+or
+not
+
+
+
+
+
+
+
+
+
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+     
+   
+   
+   
+   
+   
+   
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
