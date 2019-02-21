@@ -1,0 +1,254 @@
+>>> 0 and 1 
+0
+>>> 1 and 1
+1
+>>> 1 and 0
+0
+>>> 0 or 1
+1
+>>> 0 or 'hello'
+'hello'
+>>> 'world' or 'hello'
+'world'
+>>> 
+
+FLOW CONTROL FEATURES CONT. LOOPS
+WHILE LOOPS
+
+>>> a = 0
+>>> while a < 10:
+...     print(a)
+...     a += 1
+...  
+... 
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+>>> 
+
+
+
+
+>>> lst = [1,2,3,4,5]
+>>> for whatever in lst:
+...     print(whatever)
+... 
+1
+2
+3
+4
+5
+>>> for i in [0,1,2,3]:
+...     lst[i] += 1
+...     
+... 
+>>> 
+>>> lst
+[2, 3, 4, 5, 5]
+>>> 
+
+RANGE:
+>>> for i in range(10):
+...     print(i)
+... 
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+>>> for i in range(1,10):
+...     print(i)
+... 
+1
+2
+3
+4
+5
+6
+7
+8
+9
+>>> for i in range(1,10,2)
+  File "<stdin>", line 1
+    for i in range(1,10,2)
+                         ^
+SyntaxError: invalid syntax
+>>> for i in range(1,10,2):
+...     print(i)
+... 
+1
+3
+5
+7
+
+EVEN ODD:
+>>> for i in range (0,10,2):
+...     print(i)
+... 
+0
+2
+4
+6
+8
+>>> 
+
+RANGE:
+>>> i = iter(range(0,10))
+>>> next(i)
+0
+>>> next(i)
+1
+>>> next(i)
+2
+>>> next(i)
+3
+>>> next(i)
+4
+>>> next(i)
+5
+>>> next(i)
+6
+>>> next(i)
+7
+>>> next(i)
+8
+>>> next(i)
+9
+>>> next(i)
+
+
+GOING DOWN A LIST, MAKING IT INTO A TUPLE, THEN LIST:
+
+>>> a = range(0,10)
+>>> a
+range(0, 10)
+>>> list (a)
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+>>> tuple(a)
+(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+>>> for i in range(10,-1,-1):
+...     print(i)
+... 
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+>>> 
+
+GOING DOWN A LIST  WITH CONTINUE FUNCTION :
+
+>>> for i in range(10,-1,-1):
+...     if i%2 == 0:
+...             continue
+...     pr
+print(     property(  
+...     print(i)
+... 
+9
+7
+5
+3
+1
+>>> 
+
+
+-------> LENGTH FUNCTION <---------
+>>> lst = [1,2,3,5]
+>>> len(lst)
+4
+>>> 
+>>> len('string')
+6
+
+----> MANILPULATING A STRING <------
+>>> 'string'[0:6]
+'string'
+>>> 'string'[0:]
+'string'
+>>> 'string'[0:-1]
+'strin'
+>>> 'string'[-1:-1]
+''
+>>> 'string'[1:-1]
+'trin'
+>>> 'string'[::2]
+'srn'
+>>> 'string'[::]
+'string'
+>>> 'string'[::-1]
+'gnirts'
+>>> 
+
+
+
+-------> FIZZ BUZZ PROBLEM <---------
+
+#give a number
+# print 'fizz if it is a multiple of 3
+# buzz if its a multiple of 5
+# fizzbuzz if both
+# just print the number otherwise 
+
+x = int(input('enter a number: '))
+if ((x % 3 == 0) and (x % 5 == 0)):
+	print ("fizzbuzz")
+elif(x % 3 == 0):
+	print("fizz")
+elif (x % 5 == 0):
+	print("buzz")
+else:
+	print("number does not work")
+  
+ 
+------> FUNCTION <------
+
+def fun():
+	pass
+
+ALWAYS HAVE TO DEFINE AND CALL THE FUNCTION:
+
+def fun():
+	print('inside f')
+fun()
+
+there is always an implicet imply none 
+
+
+
+def multi(a,b):
+	return a*b
+print('{} * {} = {}'.format(2,4, multi(2,4)))
+>> 2 * 4 = 8 
+
+
+CODEWARS.COM
+
+
+
+
+
+
+
+
+
+
+
