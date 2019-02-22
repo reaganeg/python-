@@ -117,3 +117,13 @@ def DNAtoRNA(dna):
     
     
     # create a function which returns an RNA sequence from the given DNA sequence
+    
+ <----- COUNT SHEEP -------------->
+ 
+ def count_sheep(n):
+    a = []
+    for x in range(1,n+1):
+        a.append('{} sheep...'.format(x))
+            
+    return ''.join(a)
+        
