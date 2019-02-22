@@ -91,3 +91,29 @@ def final_grade(exam, projects):
         return 75
     else:
         return 0
+	
+	
+<----- INITALS OUT OF A NAME <-----
+def abbrevName(name):
+    a = name.split()
+    b = a[0][0]
+    c = a[1][0]
+    string = '{}.{}'.format(b.upper(),c.upper())  ###makes it upper case 
+    
+    print(string)
+    return string
+    
+    
+<------ DNA to RNA <-------------------
+
+def DNAtoRNA(dna):
+    rna = []
+    for x in dna:
+        if x == 'T':
+            rna.append('U')
+        else:
+            rna.append(x)
+    return ''.join(rna)
+    
+    
+    # create a function which returns an RNA sequence from the given DNA sequence
