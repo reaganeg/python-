@@ -20,5 +20,60 @@ if __name__ == '__main__':
 	print(val)
   
   
-  STEGANOGRAPHY
+ <---------- STEGANOGRAPHY ------------>
   
+  def steg_encode_char(char, cover):
+    '''LSB encodes a character
+    Args:
+        char (str): a single character string
+        cover (list): list of 8 strings representing integers in the range [0-255]
+    Returns:
+        None
+    '''
+    msgbin = format(ord(char),'0>8b')  ##converting into a binary   
+    for x in range(0,8):
+        y = list(format(int(cover[x]),'0>8b'))
+        y[-1] = msgbin[x]
+        cover[x] = int(''.join(y),2)
+        
+
+
+def steg_decode_char(stego):
+    '''LSB decodes a character
+    Args:
+        stego (list): list of 8 strings representing integers in the range [0-255]
+    Returns:
+        str: character that was decoded
+    '''
+    msgbits = []
+    for b in stego:
+        msgbits.append(bin(b)[-1])
+    return chr(int(''.join(msgbits),2))
+        
+
+
+if __name__ == '__main__':
+	char = 'a'
+	cover = ['250','251','252','251','250','249','248','249']
+	steg_encode_char('a',cover)
+	print(cover)
+	a = steg_decode_char(cover)
+	print(a)
+
+  
+  
+ <---- COUNTER PROBLEM <-------- 
+  def points(games):
+    counter = 0
+    
+    for g in games:
+        x = g.split(':')[0]
+        y = g.split(':')[1]
+        
+        if x > y:
+            counter += 3
+        elif x < y:
+            counter += 0
+        else: 
+            counter += 1
+    return counter
