@@ -1,0 +1,129 @@
+#!/usr/bin/env python3
+
+def read_pgm(filename):
+    '''Reads a PGM file
+    Args:
+        filename (str): the file name of a PGM file on disk to read from
+    Returns:
+        tuple:
+            1st element is a list of PGM header values as strings
+            2nd element is a list of pixel intensities as strings
+    '''
+    pgm = []
+    pixel = []
+    f = open(filename)
+    magic = f.readline()
+    a = f.readline()
+    b = f.readline()
+    c = f.readline()
+    d = f.readline()
+    
+    pgm.append(magic)
+    pgm.append(a)
+    pgm.append(b)
+    pgm.append(c)
+    pgm.append(d)
+    
+    line = f.readline()
+    while line:
+        line_split = line.split()
+        for l in line_split:
+            pixel.append(l)
+        line = f.readline()
+
+    f.close()         
+    return (pgm, pixel)
+            
+    
+
+
+def write_pgm(filename,content):
+    '''Writes a PGM file
+    Args:
+        filename (str): the file name to be used for the written file
+        content (tuple):
+            1st element is a list of PGM header values as strings
+            2nd element is a list of pixel intensities as strings
+    Returns:
+        None
+    ''' 
+    with open(filename, 'w') as fp:
+        for item in content[0] + content[1]:
+            fp.write('{}\n'.format(item))
+    
+    
+
+def invert(content):
+    '''Modifies the pixel intensities of the given content to be inverted
+    Args:
+        content (tuple):
+            1st element is a list of PGM header values as strings
+            2nd element is a list of pixel intensities as strings
+    Returns:
+        None
+    '''
+    pixelist = content[1]
+    for i in range(len(pixelist)):
+        pixelist[i] = str(255 - int(pixelist[i]))
+        
+        
+        
+
+if __name__ == '__main__':
+	result = read_pgm('test.pgm')
+	print(result)
+	write_pgm('test2.pgm',result)
+	invert(result)
+	print(result)
+
+    
+    
+    
+    
+  <----- MODULES <--------
+  import random
+  >>> random.randint(0,10)
+>>> randint(0,10)
+>>> randint(0,10)
+import deliverable ###import the file name 
+content = deliverable.read_pgm('test.pgm')
+
+BUILT IN FUNCTIONS <----------
+
+
+abs() = absolute value 
+all() = returns true if all are true
+bin () = binary 
+bool() = boolean value
+callable() = can be called like a function 
+compile() = ARBRITUARY PYTHON code 
+dir() = what attriutes are available 
+divmod() = quotent and remainder
+enumerate() = shows the touples
+eval() = evaluate a single expression 
+float() = default float 
+hash() = hash itself 
+hex() = goves hex value
+map () = canmake a list all one integer
+min()
+max()
+pow()
+reversed()
+''.join(reversed('hello'))   <----- reverses a string
+sorted() = puts things in order 
+''.join(reversed('hello'))
+sum(lst) - max(lst) - min(lst)    <----- makes a sum minus the max and min
+ sum(sorted(lst)[1:-1])
+zip() = combines 2 lists
+>>> list(zip(lst1,lst2))
+[(1, 1), (2, 2), (3, 4), (4, 5), (5, 6)]
+
+
+
+
+
+
+
+
+
+
