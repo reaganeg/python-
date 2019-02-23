@@ -34,8 +34,9 @@ def read_pgm(filename):
     f.close()         
     return (pgm, pixel)
             
-    
 
+   ## with open(filename) as f:
+		content = f.read()
 
 def write_pgm(filename,content):
     '''Writes a PGM file
