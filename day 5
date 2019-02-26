@@ -1,0 +1,503 @@
+Part 5
+
+
+
+#!/usr/bin/env python3
+
+def sentinel():
+    return chr(128)
+
+def encode_pgm(msg,coverfilename,outputfilename):
+    '''Encodes a message in a PGM file
+    Args:
+        msg (str): the message to encode
+        coverfilename (str): the name of the PGM file on disk to use as the cover
+        outputfilename (str): the name of the new PGM file to write
+    Returns:
+        None
+    '''
+    ### reads the file 
+    with open(coverfilename) as f:
+	    content = f.read()
+    content = content.split()
+    head = content[:4]
+    cover = content[4:]
+    msg = msg + sentinel()
+    
+    coverindex = 0
+    for char in msg:
+        charbin = format(ord(char),'0>8b')
+        for index in range(0,8):
+            coverbinl = list(format(int(cover[coverindex]),'0>8b'))
+            coverbinl[-1] = charbin[index]
+            cover[coverindex] = str(int(''.join(coverbinl),2))
+            coverindex += 1	  
+   
+    with open(outputfilename, 'w') as fp:
+        for item in head + cover:
+            fp.write('{}\n'.format(item))  
+
+def decode_pgm(filename):
+    '''Decodes a message hidden in a PGM file
+    Args:
+        filename (str): the name of the PGM file that contains a hidden message
+    Returns:
+        str: the message that was encoded in the PGM file
+    '''
+    with open (filename) as f:
+        content = f.read()
+    content = content.split()
+    head = content[:4]
+    cover = content[4:]
+    msgbits = []
+    msg = []
+    for b in cover:
+        msgbits.append(bin(int(b))[-1])
+        if len(msgbits) == 8:
+            decodedchar = chr(int(''.join(msgbits),2))
+            if decodedchar == sentinel():
+                break
+            msg.append(decodedchar)
+            msgbits = []
+    return ''.join(msg) 
+
+
+
+
+if __name__ == '__main__':
+    encode_pgm('i love me', 'plain.pgm', 'encoded.pgm')
+    print(decode_pgm('encoded.pgm'))
+    
+
+<-----CAPATALIZES THE FIRST LETTER <----
+
+def capitalizeWord(word):
+    return word.capitalize()
+
+
+<---- returns initials <-----
+def abbrevName(name):
+    a = name.split()
+    b = a[0][0]
+    c = a[1][0]
+    string = '{}.{}'.format(b.upper(),c.upper())
+    
+    print(string)
+    
+<-----  Creating a dictionary   ----->
+    >>> d = { 'key':0}
+>>> d['key']
+0
+>>> for t in d.items()
+  File "<stdin>", line 1
+    for t in d.items()
+                     ^
+SyntaxError: invalid syntax
+>>> 
+>>> for t in d.items():
+...     print(t[0],t[1])
+... 
+key 0
+>>> 
+
+
+<----SETS <----
+cannot index into sets
+>>> 1 in s 
+True
+>>> 4 in s
+False
+>>> 
+
+
+
+<--- add items to a set <-----
+>>> s
+{1, 2, 3}
+>>> s.add(10)
+>>> s
+{10, 1, 2, 3}
+>>> 
+
+>>> s
+{1, 2, 3}
+>>> s.add(10)
+>>> s
+{10, 1, 2, 3}
+>>> s2 = {3,4,5}
+>>> s.union(s2)
+{1, 2, 3, 4, 5, 10}
+>>> s.difference(s2)
+{1, 10, 2}
+>>> s.intersection(s2)
+{3}
+>>> 
+
+
+< ------ SET CANNOT HAVE ANY DUPLICATE ITENS ---->
+>>> s = {1,3,3,4,5,5,6}
+>>> s
+{1, 3, 4, 5, 6}
+
+
+< ------ REMOVE DUPLICATES ------->
+
+>>> l = [1,2,3,3,4,5]
+>>> l = list(set(l))
+>>> l
+[1, 2, 3, 4, 5]
+
+
+>>> newl = []
+>>> for item in l:
+...     if item not in seen:
+...             newl.append(item)
+...             seen.add(item)
+...     
+... 
+>>> newl
+[1, 2, 3, 4, 5]
+>>> 
+
+
+<---- FUNCTIONS <------
+
+>>> def func(a,b):
+...     print(a,b)
+... 
+>>> func(1,2)
+1 2
+>>> func(b =2, a =1)
+1 2
+>>> l = [1,2]
+>>> func(*l)
+1 2
+>>> 
+
+<---- VARIABLE NUMBER OF ARGUMENTS <-----
+
+>>> def ownaum(*args):
+...     sum = 0
+...     for item in args:
+...             sum += item
+...     return sum
+... 
+>>> 
+>>> ownaum(1,2,3)
+6
+>>> ownaum(1,2,3,4,5,6)
+21
+>>> ownaum
+
+
+<---- KEY WORD ARGUMENTS <------
+>> def ownasum(a,b,*args):
+...     sum = a+ b
+...     for item in args:
+...             sum += item
+...     return sum
+...      
+... 
+>>> ownasum()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: ownasum() missing 2 required positional arguments: 'a' and 'b'
+>>> ownasum(1,2,3)
+6
+>>> 
+ARGS AND KWARGS???????
+
+
+>> def ownsum(a,b):
+...     return a + b
+... 
+>>> f = ownsum
+>>> f(1,2)
+3
+>>> def produce5():
+...     return 5
+... 
+>>> f
+<function ownsum at 0x7efd0e84e7b8>
+>>> def ownsum(a,b):
+...     return a + b ()
+... 
+>>> 
+>>> ownsum(1,produce5)
+6
+>>> 
+
+
+
+LAMBDA
+
+
+>>> lambda x: x**2
+<function <lambda> at 0x7efd0e13ac80>
+>>> f = lambda x: x**2
+>>> f(2)
+4
+>>> f(3)
+9
+>>> 
+
+
+<---- SORTING <------
+>>> 
+>>> l = [3,1,2,6,5,3]
+>>> sorted(l)
+[1, 2, 3, 3, 5, 6]
+>>> sorted(l,reverse = True)
+[6, 5, 3, 3, 2, 1]
+>>> l = ([(1,2),(3,0),(2,1)]
+... 
+... 
+... 
+... 
+... 
+... )
+>>> l
+[(1, 2), (3, 0), (2, 1)]
+>>> sorted(l)
+[(1, 2), (2, 1), (3, 0)]
+>>> sorted(l)
+[(1, 2), (2, 1), (3, 0)]
+>>> def keyfunc(t):
+...     return t[1]
+... 
+>>> sorted(l,key=keyfunc)
+[(3, 0), (2, 1), (1, 2)]
+>>> 
+>>> sorted(l,key=lambda t: t[1])
+[(3, 0), (2, 1), (1, 2)]            <----- SAME SORT 
+>>> 
+
+>>> sorted(l,key=lambda t: t[0])
+[(1, 2), (2, 1), (3, 0)]
+>>> 
+
+>>> min(l)
+(1, 2)
+>>> min(l,key=lambda t: t[1])  <----- on the second element 
+(3, 0)
+>>> 
+
+
+>>> l = ['250','345','249']
+>>> ma
+map(  max(  
+>>> map(int,l)
+<map object at 0x7efd0e13fc18>
+>>> for i in map(int, l):
+...     print(i)
+... 
+250
+345
+249
+>>> g = map(int, l)
+>>> i = iter(g)
+>>> next(i)
+250
+>>> next(i)
+345
+>>> next(i)
+249
+>>> 
+
+
+
+
+
+>>> def gensomething(strng):
+...     for c in strng:
+...             yield c
+... 
+>>> for i in gensomething('hello'):
+...     print(i)
+... 
+h
+e
+l
+l
+o
+>>> 
+
+
+ITERS
+
+>>> g=(x**2 for x in range(10))
+>>> i=iter(g)
+>>> nextgg)
+  File "<stdin>", line 1
+    nextgg)
+          ^
+SyntaxError: invalid syntax
+>>> next(g)
+0
+>>> next(g)
+1
+>>> next(g)
+4
+>>> next(g)
+9
+>>> next(g)
+16
+>>> next(g)
+25
+>>> next(g)
+36
+>>> next(g)
+49
+>>> next(g)
+64
+>>> 
+
+
+----> DECORATORS <---
+
+>>> def add(a,b):
+...     return a + b
+... 
+>>> def sub(a,b):
+...     return a - b
+... 
+>>> def dec(func):
+...     def inner(a,b):
+...             print('callll')
+...             func(a,b)
+... 
+>>> def dec(func):
+...     def inner(a,b):
+...             print('call')
+...             result = func(a,b)
+...             print('dddd')
+...             return result
+...     return inner
+... 
+>>> add (2,3)
+5
+>>> add dec(add)
+  File "<stdin>", line 1
+    add dec(add)
+          ^
+SyntaxError: invalid syntax
+>>> add = dec(sub)
+>>> sub = dec(sub)
+>>> ad(2,3)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'ad' is not defined
+>>> add(2,3)
+call
+dddd
+-1
+>>> sub(5,2)
+call
+dddd
+3
+>>> 
+
+
+
+<---- counting the items in a dictionary <------
+
+#!/usr/bin/env python3
+
+
+def defin(key):
+    mydict = {} ###empty {} equals empty dictionary <---- mydict = dict()
+    for x in key:
+        if x in mydict:  ### if its in the dict add one
+            mydict[x] += 1
+        else:
+            mydict[x] = 1  ###not repeated equals 1 
+	
+    return mydict
+    
+ 
+ if __name__ == '__main__':
+    a = defin(['a','b','b','c','c','a',3,5,6,3])
+    print(a)
+
+
+
+<--- part 6 <-----
+
+#!/usr/bin/env python3
+
+def caesar_encrypt(plaintext,key):
+    '''Encrypts plaintext using the Caesar Cipher
+    Args:
+        plaintext (str): a string to be encrypted (all lowercase)
+        key (int): number of characters to shift
+    Returns:
+        str: the encrypted ciphertext
+    '''
+    dic = {}
+    for a in plaintext:
+        if a == ' ':
+           dic[ord(a)] = ' '
+           continue
+        dic[ord(a)] = chr(((ord(a)+key-97)%26)+97)
+    
+        
+    b = plaintext.translate(dic)
+    
+    
+    return b
+
+def caesar_decrypt(ciphertext,key):
+    '''Decrypts ciphertext using the Caesar Cipher
+    Args:
+        ciphertext (str): the string to be decrypted (all lowercase)
+        key (int): number of characters to shift
+    Returns:
+        str: the decrypted plaintext
+    '''
+    dic = {}
+    for a in ciphertext:
+        if a == ' ':
+           dic[ord(a)] = ' '
+           continue
+        dic[ord(a)] = chr(((ord(a)-key-97)%26)+97)
+    
+        
+    b = ciphertext.translate(dic)
+    return b 
+
+if __name__ == '__main__':
+    a = caesar_encrypt('reagan', 1)
+    print(a)
+    b = caesar_decrypt(a, 1)
+    print(b) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    return string
+    
+
+
+
