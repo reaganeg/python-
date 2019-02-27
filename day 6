@@ -27,3 +27,29 @@ character set is just a map between a numebr and code??
 def no_space(x):
     x = x.replace(' ','') 
     return x
+    
+    
+<----- reversing a list <------
+def reverse_list(l):
+  for rev in l:
+      rev = l[::-1]
+      return rev 
+      
+ <--- counting pos and negs <---
+ 
+ def count_positives_sum_negatives(arr):
+    pos = 0
+    neg = 0
+    if len(arr) == 0:
+        return []
+    
+    for x in arr:
+      
+        if x > 0:
+            pos += 1
+        elif x < 0:
+            neg = neg + x
+        else:
+            continue
+        
+    return [pos,neg]
