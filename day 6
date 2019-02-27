@@ -1,0 +1,29 @@
+Binary <-----
+
+
+>>> bin(225)
+'0b11100001'
+>>> bin(256)
+'0b100000000'
+>>> 255
+255
+>>> oxff
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'oxff' is not defined
+>>> 0xff
+255
+>>> bin(0b11111111)
+'0b11111111'
+>>> 
+
+
+
+character set is just a map between a numebr and code??
+
+
+<---- REMOVES SPACES FROM A STRING ,--- 
+
+def no_space(x):
+    x = x.replace(' ','') 
+    return x
