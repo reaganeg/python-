@@ -1,0 +1,289 @@
+<----- remove punctuation n amount of times: <------
+
+def remove(s, n):
+    return s.replace("!", "", n)
+      
+<---- COUNTER PROBLEM <-------- 
+  def points(games):
+    counter = 0
+    
+    for g in games:
+        x = g.split(':')[0]
+        y = g.split(':')[1]
+        
+        if x > y:
+            counter += 3
+        elif x < y:
+            counter += 0
+        else: 
+            counter += 1
+    return counter
+
+
+<----- FINAL GRADE PROBLEM <-----
+
+def final_grade(exam, projects):
+    
+    if (exam >= 90) or (projects > 10):
+        return 100
+    elif (exam > 75) and (projects >= 5):
+        return 90
+    elif (exam >= 50) and (projects >= 2):
+        return 75
+    else:
+        return 0
+	
+	
+<----- INITALS OUT OF A NAME <-----
+def abbrevName(name):
+    a = name.split()
+    b = a[0][0]
+    c = a[1][0]
+    string = '{}.{}'.format(b.upper(),c.upper())  ###makes it upper case 
+    
+    print(string)
+    return string
+    
+    
+<------ DNA to RNA <-------------------
+
+def DNAtoRNA(dna):
+    rna = []
+    for x in dna:
+        if x == 'T':
+            rna.append('U')
+        else:
+            rna.append(x)
+    return ''.join(rna)
+    
+    
+    # create a function which returns an RNA sequence from the given DNA sequence
+    
+ <----- COUNT SHEEP -------------->
+ 
+ def count_sheep(n):
+    a = []
+    for x in range(1,n+1):
+        a.append('{} sheep...'.format(x))
+            
+    return ''.join(a)
+        
+<-----SUMMATION <------
+
+def summation(num):
+    sum = 0
+    for x in range (1, num +1):
+        sum += x
+    return sum 
+    
+<----- banjo ??? <-------    
+def areYouPlayingBanjo(name):
+    x = name[0]
+    if (x == 'r' ) or ( x =='R') :
+      return '{} plays banjo'.format(name)
+    else:
+      return '{} does not play banjo'.format(name)
+      
+      
+      
+      
+ 
+<---- RETURN INTEGRAL PROBLEM <------
+def integrate(coefficient, exponent):
+    integral = coefficient / (exponent + 1)
+    if str(integral)[-2:] == '.0':
+        integral = int(integral)
+        
+    return '{}x^{}'.format(integral, exponent + 1)
+    
+    
+    
+    
+<-----CAPATALIZES THE FIRST LETTER <----
+
+def capitalizeWord(word):
+    return word.capitalize()
+
+
+<---- returns initials <-----
+def abbrevName(name):
+    a = name.split()
+    b = a[0][0]
+    c = a[1][0]
+    string = '{}.{}'.format(b.upper(),c.upper())
+    
+    print(string)
+    
+    
+<---- counting the items in a dictionary <------
+
+#!/usr/bin/env python3
+
+
+def defin(key):
+    mydict = {} ###empty {} equals empty dictionary <---- mydict = dict()
+    for x in key:
+        if x in mydict:  ### if its in the dict add one
+            mydict[x] += 1
+        else:
+            mydict[x] = 1  ###not repeated equals 1 
+	
+    return mydict
+    
+ 
+ if __name__ == '__main__':
+    a = defin(['a','b','b','c','c','a',3,5,6,3])
+    print(a)
+
+
+
+<---- REMOVES SPACES FROM A STRING ,--- 
+
+def no_space(x):
+    x = x.replace(' ','') 
+    return x
+    
+    
+<----- reversing a list <------
+def reverse_list(l):
+  for rev in l:
+      rev = l[::-1]
+      return rev 
+      
+ <--- counting pos and negs <---
+ 
+ def count_positives_sum_negatives(arr):
+    pos = 0
+    neg = 0
+    if len(arr) == 0:
+        return []
+    
+    for x in arr:
+      
+        if x > 0:
+            pos += 1
+        elif x < 0:
+            neg = neg + x
+        else:
+            continue
+        
+    return [pos,neg]
+    
+    
+    
+<-----   write a number in expanded form: ------->
+
+def expanded_form(num):
+    result = []
+
+    for index, digit in enumerate(str(num)[::-1]):
+        if int(digit) != 0:
+            result.append(digit + ('0' * index))
+
+    return ' + '.join(result[::-1])
+    
+    
+  <---   Reverese words in a string <------
+    
+    def reverse_words(text):
+ 
+  return ' '.join(w[::-1] for w in text.split(' ')) 
+  
+  
+  OR
+  
+  def reverse_words(str):
+    lst = str.split(" ")
+    for i in range(len(lst)):
+        lst[i] = lst[i][::-1]
+    return ' '.join(lst)
+
+
+
+>----sorted lists <--
+
+def longest(s1, s2):
+    word = s1 + s2
+    word = list(dict.fromkeys(word))  ##dict.fromkeys, library fromkeys automatically included libary, makes a dict from each element in the list as a key, and ignores dumpilcates 
+    word.sort()
+    
+    return ''.join(word)
+    
+    
+    
+  <--- removing punctuation from a string <----
+  
+   def remove_exclamation_marks(s):
+    stringParts = s.split("!")
+    newString = "".join(stringParts)
+    return newString
+
+
+<--- remove every other list in an array <---
+
+def remove_every_other(my_list):
+    return my_list[::2]# Your code here!
+    
+    
+ <--- remove the first and last elements in an array <----
+ 
+    return s[1:-1]
+    
+    
+    
+ <--- if elm is in a list <----
+ 
+ def check(seq, elem):
+    if elem in seq:
+        return True  ###in function
+    else:
+        return False 
+        
+        
+        
+        
+  <---- returning even numbers <----
+  
+  
+  def even_numbers(arr,n):
+    lst = []
+    for even in arr:
+        if even % 2 == 0:
+          lst.append(even)
+          
+    return lst[-n:]
+    
+  -------> FIZZ BUZZ PROBLEM <---------
+
+#give a number
+# print 'fizz if it is a multiple of 3
+# buzz if its a multiple of 5
+# fizzbuzz if both
+# just print the number otherwise 
+
+x = int(input('enter a number: '))
+if ((x % 3 == 0) and (x % 5 == 0)):
+	print ("fizzbuzz")
+elif(x % 3 == 0):
+	print("fizz")
+elif (x % 5 == 0):
+	print("buzz")
+else:
+	print("number does not work")
+  
+  
+  
+<---- RETURN GEESE PROBLEM <----
+
+geese = {"African", "Roman Tufted", "Toulouse", "Pilgrim", "Steinbacher"}
+
+def goose_filter(birds):
+    return [bird for bird in birds if bird not in geese]
+    
+    
+    
+ <---- RETURN MIN OF AN ARRAY <-----
+ def find_smallest_int(arr):
+    return min(arr)# Code here
+ 
+ 
