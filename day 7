@@ -65,3 +65,17 @@ def remove_every_other(my_list):
         return True  ###in function
     else:
         return False 
+        
+        
+        
+        
+  <---- returning even numbers <----
+  
+  
+  def even_numbers(arr,n):
+    lst = []
+    for even in arr:
+        if even % 2 == 0:
+          lst.append(even)
+          
+    return lst[-n:]
