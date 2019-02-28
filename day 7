@@ -1,0 +1,67 @@
+write a number in expanded form:
+
+def expanded_form(num):
+    result = []
+
+    for index, digit in enumerate(str(num)[::-1]):
+        if int(digit) != 0:
+            result.append(digit + ('0' * index))
+
+    return ' + '.join(result[::-1])
+    
+    
+  <---   Reverese words in a string <------
+    
+    def reverse_words(text):
+ 
+  return ' '.join(w[::-1] for w in text.split(' ')) 
+  
+  
+  OR
+  
+  def reverse_words(str):
+    lst = str.split(" ")
+    for i in range(len(lst)):
+        lst[i] = lst[i][::-1]
+    return ' '.join(lst)
+
+
+
+>----sorted lists <--
+
+def longest(s1, s2):
+    word = s1 + s2
+    word = list(dict.fromkeys(word))  ##dict.fromkeys, library fromkeys automatically included libary, makes a dict from each element in the list as a key, and ignores dumpilcates 
+    word.sort()
+    
+    return ''.join(word)
+    
+    
+    
+  <--- removing punctuation from a string <----
+  
+   def remove_exclamation_marks(s):
+    stringParts = s.split("!")
+    newString = "".join(stringParts)
+    return newString
+
+
+<--- remove every other list in an array <---
+
+def remove_every_other(my_list):
+    return my_list[::2]# Your code here!
+    
+    
+ <--- remove the first and last elements in an array <----
+ 
+    return s[1:-1]
+    
+    
+    
+ <--- if elm is in a list <----
+ 
+ def check(seq, elem):
+    if elem in seq:
+        return True  ###in function
+    else:
+        return False 
