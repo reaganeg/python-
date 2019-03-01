@@ -305,3 +305,18 @@ def goose_filter(birds):
 
 def char_freq(message):
     return Counter(message)
+
+
+<---- SUM OF A SEQUENCE <----
+
+
+
+def sequence_sum(begin_number, end_number, step):
+    if begin_number > end_number:
+        return 0
+    sum = 0
+    while (begin_number <= end_number):
+        sum = sum + begin_number
+        begin_number += step
+      
+    return sum
