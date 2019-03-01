@@ -286,4 +286,22 @@ def goose_filter(birds):
  def find_smallest_int(arr):
     return min(arr)# Code here
  
+ <--- count characters in a string <----
  
+ def char_freq(message):
+    dict = {}
+    for n in message:
+        keys = dict.keys()
+        if n in keys:
+            dict[n] += 1
+        else:
+            dict[n] = 1
+    return dict
+    
+    
+    OR
+    
+ from collections import Counter
+
+def char_freq(message):
+    return Counter(message)
