@@ -363,3 +363,53 @@ ef distance_from_zero(num):
     return abs(num)
   else:
     return "Nope"
+
+
+
+
+
+
+<---- DECK PROBLEM <----
+import random
+import collections import deque
+class Card:
+	def__init__(self,rank,suit):
+		self.rank = rank
+		self.suit = suit
+	def__str__(self):
+		return '{}{}'.format(self.rank,self.suit)
+	def__repr__(self):
+		return self.__str__()
+class Deck:
+	def__init__(self):
+		self.cards = []
+		for suit in ['\u2660','\u2665','\u2666','\u2663']:
+			for rank in [2,3,4,5,6,7,8,9,10,'J','Q','K',A']:
+				self.cards.append(Card(rank,suit))
+	def__shuffle(self):
+		random.shuffle(self.cards)
+	def deal(self,cards=1):
+		return [self.cards.popleft() for __ in range(cards)]
+if__name__=='__main__':
+	deck = Deck ()
+	hand = deck.deal(5)
+	print(hand)
+		
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
