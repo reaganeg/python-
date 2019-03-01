@@ -336,3 +336,23 @@ if len(original) > 0 and original.isalpha():
   print(new_word)
 else:
     print 'empty'
+
+
+<--- Area Calculator <---
+
+###bkah bka bkaggg 
+print('calculatorrr')
+option = raw_input("Enter C for Circle or T for Triangle:")
+if option == 'C' :
+  radius = float(raw_input("Enter radius: "))
+  area = 3.14159 * radius**2
+  print('{} is the area of c'.format(area))
+elif option == 'T' :
+  base = float(raw_input("Enter Base: "))
+  height = float(raw_input('enter height: '))
+  area = 0.5 * base * height
+  print('{} this is the area of t'.format(area))
+else:
+  	print('enter invalid shape')
+  
+      
