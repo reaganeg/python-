@@ -1,0 +1,40 @@
+<--- ???? <------
+
+
+#!/usr/bin/python3
+
+
+def logme(func):
+    def inner(*args,**kwargs):
+        with open('test.log','wa') as fp:
+            fp.write('calling {} \n'.format(func.__name__))
+            a = func(*args,**kwargs)
+            fp.write('returning {}{}\n'.format(func.__name__,a))
+            return a
+       
+    return inner
+@logme
+
+def add(a,b):
+    return a + b
+
+if __name__ == '__main__':
+
+
+
+<--- GEN POWER OF 2 <-------
+
+
+#!/usr/bin/python3
+
+
+def powersOfTwo():
+    i = 0
+    while True:
+        yield 2**i
+        i+=1
+
+
+if __name__ == '__main__':
+ 
+pass
