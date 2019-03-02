@@ -460,3 +460,32 @@ def who_is_paying(name):
     else:
         a = name[0:2]
     return[name, a]
+    
+    
+    
+  <---- whats up next <---
+  
+  def next_item(xs, item):
+    found = False
+    for x in xs:
+      if found:
+        return x
+      if x == item:
+        found = True
+
+
+
+<--- min max of a string <-----
+
+def mxdiflg(a1, a2):
+    currmax = 0
+    if (len(a1) and len(a2)) == 0:
+        
+        return -1
+    for x in a1:
+        for y in a2:
+            currlen = abs(len(x) - len(y))
+            if currlen > currmax:
+                currmax = currlen
+    
+    return currmax
