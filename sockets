@@ -1,0 +1,50 @@
+socket on either side the client and server
+SOCK_STREAM <---- TCP 
+sock_dgram <---- UDP
+
+
+
+#!/usr/bin/python3
+
+import socket
+
+##UDP
+## server side udp
+def udp_server():
+    s = socket.socket(type=socket.SOCK_DGRAM)
+    s.bind(('',12345))
+    while True:
+        data,addres = s.recvfrom(4096)   ###a bug #
+        print(data, 'received from {}'.format(address))
+        s.sendto(data, address)
+
+
+def udp_client():
+    s = socket.socket(type=socket.SOCK_DGRAM)
+    s.sendto(b'hello world',('127.0.0.1',12345)) # usually given as a tuple
+    data, address = s.recvfrom(4096)
+    print(data, 'recieved from {}'.format(address))
+
+
+
+## TCP
+def tcp_server():
+    s = socket.socket() ##default
+    s.bind(('',12345))
+    s.listen() ##block and sit and wait for a connection to a client 
+    
+    while True:
+        conns,address = s.accept()
+        print('connection accepted from {}'.format(address))
+        data = conn.recv(4096)
+        con.sendall(data)  
+        conn.close()
+
+
+def tcp_client():
+    s = socket.socket()
+    s.connect(('127.0.0.1', 12345))
+    s.sendall(b'hello world')
+    data = s.recv(4096)
+    print(data,'recieved')
+    
